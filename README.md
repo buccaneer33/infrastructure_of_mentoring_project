@@ -13,27 +13,9 @@ git clone https://github.com/buccaneer33/infrastructure_of_mentoring_project.git
 2.  Start up docker-compose
 
 ```sh
-docker-compose up --build
+docker-compose up --build --scale frontend=2
 ```
 3. Open your browser on `"localhost:8080"` and use the app.
 
-### Development Installation
 
-1.  Clone this repo to your local machine in `infrasructure` folder. Dont change the folder name!
-
-```sh
-git clone https://github.com/buccaneer33/infrastructure_of_mentoring_project.git -b development
-```
-
-2.  Go to the project's root directory
-
-3.  Run
-
-```sh
-docker-compose up --build
-```
-
-4.  Open your browser on `"localhost:8080"` and use the app.
-
-5. After runs you can see files in `data` folder
 

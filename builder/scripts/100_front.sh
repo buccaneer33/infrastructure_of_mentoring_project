@@ -1,0 +1,1 @@
+git clone $2 $1/front && cd $1/front && npm install && ng build

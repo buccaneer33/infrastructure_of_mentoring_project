@@ -1,1 +1,0 @@
-git clone $3 $1/admin && cd $1/admin/wisp-cms-admin && npm install && ng build

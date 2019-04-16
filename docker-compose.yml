@@ -1,6 +1,24 @@
-version: '3.1'
+version: '3.7'
 
 services:
+
+  builder:
+    build: 
+      context: ./
+      args:
+        - REPO_FOLDER=${REPO_FOLDER}
+        - ADMIN_GIT_REPO=${ADMIN_GIT_REPO}
+        - FRONT_GIT_REPO=${FRONT_GIT_REPO}
+        - BACK_GIT_REPO=${BACK_GIT_REPO}
+      dockerfile: ./builder/Dockerfile
+    volumes:
+      - front-volume:${REPO_FOLDER}/front/dist/client
+      - content-volume3:${REPO_FOLDER}/back
+      - ./backend/conf/apache.conf:/etc/apache2/apache2.conf
+      - type: volume
+        source: content-volume2
+        target: ${REPO_FOLDER}/admin2/wisp-cms-admin/dist/wisp-cms-admin
+    env_file: .env
 
   front_balancer:
     build: ./front_balancer
@@ -9,26 +27,22 @@ services:
      - "${FRONTEND_WEB_PORT2}:443"
     links:
       - frontend
+    depends_on:
+      - builder
 
   frontend:
     build: ./frontend
     volumes:
-    - front-volume:/usr/share/nginx/htmle
+     - front-volume:/usr/share/nginx/html
+    depends_on:
+      - builder
 
-
-  admin:
-    build: ./admin
-    volumes:
-      - admin-volume:/usr/share/nginx/html
-    ports:
-     - "8085:80"
-    
   backend:
     build: 
       context: ./
       dockerfile: ./backend/Dockerfile
     volumes:
-      - back-volume:/var/www/html/web
+      - content-volume3:/var/www/html/web
       - ./backend/conf/default.conf:/etc/apache2/sites-available/000-default.conf
       - ./backend/conf/apache.conf:/etc/apache2/apache2.conf
     ports:
@@ -37,53 +51,49 @@ services:
       - db
     depends_on:
       - db
+      - builder
 
   db:
-    build: ./db
-    restart: always
-    volumes:
-    - ./db/config:/etc/mysql/conf.d
-    - ./data/db:/var/lib/mysql
-    command:
+     build: ./db
+     restart: always
+     volumes:
+      - ./db/config:/etc/mysql/conf.d
+      - ./data/db:/var/lib/mysql
+     command:
       'mysqld --innodb-flush-method=fsync'
-    environment:
+     environment:
         MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
         MYSQL_DATABASE: ${MYSQL_DBNAME}
-    ports: 
+     ports: 
       - "${DB_WEB_PORT}:3306"
-    depends_on:
+     depends_on:
       - builder
 
   db-editor:
-    build: ./db-editor
-    restart: always
-    ports: 
-      - "${ADMINER_WEB_PORT}:8080"
-    depends_on:
-      - db
-      - builder
-    links:
-      - db
+     build: ./db-editor
+     restart: always
+     ports: 
+       - "${ADMINER_WEB_PORT}:8080"
+     depends_on:
+       - db
+       - builder
+     links:
+       - db
 
-  builder:
-    build: 
-      context: ./
-      args:
-        - REPO_FOLDER=${REPO_FOLDER}
-        - FRONT_GIT_REPO=${FRONT_GIT_REPO}
-        - ADMIN_GIT_REPO=${ADMIN_GIT_REPO}
-        - BACK_GIT_REPO=${BACK_GIT_REPO}
 
-      dockerfile: ./builder/Dockerfile
-
+  admin:
+    build: ./admin
     volumes:
-      - front-volume:${REPO_FOLDER}/front/dist/client
-      - admin-volume:${REPO_FOLDER}/admin/wisp-cms-admin/dist/wisp-cms-admin
-      - back-volume:${REPO_FOLDER}/back
-    env_file: .env
+     - type: volume
+       source: content-volume2
+       target: /usr/share/nginx/html
+    ports:
+     - "8085:80"
+    depends_on:
+     - builder
 
-
+ 
 volumes:
   front-volume:
-  admin-volume:
-  back-volume:
+  content-volume2: 
+  content-volume3:

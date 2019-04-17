@@ -13,6 +13,9 @@ services:
       dockerfile: ./builder/Dockerfile
     volumes:
       - front-volume:${REPO_FOLDER}/front/dist/client
+#      - type: volume
+#        source: content-volume3
+#        target: ${REPO_FOLDER}/back
       - content-volume3:${REPO_FOLDER}/back
       - ./backend/conf/apache.conf:/etc/apache2/apache2.conf
       - type: volume
@@ -43,6 +46,10 @@ services:
       dockerfile: ./backend/Dockerfile
     volumes:
       - content-volume3:/var/www/html/web
+#      - type: volume
+#        source: content-volume3
+#        target: /var/www/html/web
+
       - ./backend/conf/default.conf:/etc/apache2/sites-available/000-default.conf
       - ./backend/conf/apache.conf:/etc/apache2/apache2.conf
     ports:

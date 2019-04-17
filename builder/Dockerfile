@@ -27,6 +27,7 @@ ARG BACK_GIT_REPO
 
 
 RUN mkdir $REPO_FOLDER
+#COPY /backend/start.sh $REPO_FOLDER
 COPY /runtime $REPO_FOLDER
 COPY /builder/scripts $REPO_FOLDER/scripts
 #RUN sudo sh $REPO_FOLDER/runtime.sh $REPO_FOLDER $FRONT_GIT_REPO $ADMIN_GIT_REPO $BACK_GIT_REPO

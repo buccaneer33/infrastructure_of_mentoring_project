@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends git zip
 #RUN chmod 755 /var/www/html/start.sh
 
 WORKDIR /var/www/html/web
-CMD ["ls", "-la"]
-#CMD /var/www/html/web/rundoctrine.sh
+#CMD ["ls", "-la"]
+CMD /var/www/html/web/start.sh
 #CMD ["sh php bin/console doctrine:database:create --if-not-exists"]
 #CMD ["php", "bin/console doctrine:database:create --if-not-exists"]

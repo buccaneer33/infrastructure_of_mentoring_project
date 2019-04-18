@@ -1,8 +1,7 @@
-git clone $4 $1/back && \
-#mv $1/start.sh $1/back/rundoctrine.sh  && \
+git clone $4 -b development $1/back && \
 cd $1/back && \
 chmod 755 .env && \
 chmod 755 start.sh && \
-#ls -al &&\
+ls -al &&\
 composer install --no-plugins --no-scripts #&& \
-#ls -al
+ls -al

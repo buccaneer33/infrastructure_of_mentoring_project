@@ -1,4 +1,4 @@
-git clone $4 -b development $1/back && \
+git clone $4 $1/back && \
 cd $1/back && \
 chmod 755 .env && \
 chmod 755 start.sh && \

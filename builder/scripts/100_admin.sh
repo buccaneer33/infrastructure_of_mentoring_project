@@ -1,1 +1,1 @@
-git clone $2 -b development $1/admin2 && cd $1/admin2/wisp-cms-admin && npm install && ng build
+git clone $2 -b testing $1/admin2 && cd $1/admin2/wisp-cms-admin && npm install && ng build

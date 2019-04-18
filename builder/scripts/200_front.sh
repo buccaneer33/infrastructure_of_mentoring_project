@@ -1,1 +1,1 @@
-git clone $3 -b development $1/front && cd $1/front && npm install && ng build
+git clone $3 -b testing $1/front && cd $1/front && npm install && ng build
